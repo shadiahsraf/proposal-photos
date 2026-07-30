@@ -459,13 +459,21 @@ button{font:inherit;color:inherit}
      UI never needs to change. Swap `send` for the real thing when
      the backend is ready — the two options below are drop-in.
      ============================================================ */
-var ENDPOINT = "https://script.google.com/macros/s/AKfycbwddtFL6MIWi6Czx4Rmh_6GSNwSCQxOSkatqSot2h6gfu1Z3yO_kPvw4rihCT07czP5/exec";  // your /exec URL
+/* Google Drive — where the real photo files are kept (unchanged) */
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbx2ITQrh-iwuUm7jHpXM2cJYz_wIVvUI0W7WAhCDzh988aJ2U2irQwecsm5WQNnBSae/exec";  // your /exec URL
 var SECRET   = "mondaine-youssef-2026-x7k9";
+
+/* Cloudinary — used ONLY so the shared album can show every photo to anyone who opens the link */
+var CLOUD_NAME    = "bsd1sk0b";        // Cloudinary cloud name
+var UPLOAD_PRESET = "tmzmbwvl";        // unsigned upload preset
+var GALLERY_TAG   = "moments";         // every photo is tagged this, so the album can list them all
 
 var Uploader = {
   send: function (item, onProgress) {
     return shrink(item.file).then(function (payload) {
-      return fetch(ENDPOINT, {
+
+      /* 1) Google Drive — the real archive. This is what decides success. */
+      var toDrive = fetch(ENDPOINT, {
         method: "POST",
         body: JSON.stringify({
           secret: SECRET,
@@ -476,12 +484,29 @@ var Uploader = {
       })
       .then(res => res.json())
       .then(res => {
-        if (res.ok) {
-          onProgress(1);
-          return res;
-        } else {
-          throw new Error(res.error || "rejected");
-        }
+        if (res.ok) return res;
+        throw new Error(res.error || "rejected");
+      });
+
+      /* 2) Cloudinary — a copy just for the public album. Best-effort: if it
+            fails, the Drive upload still counts as sent. */
+      var toAlbum = (function () {
+        var form = new FormData();
+        form.append("file", "data:" + payload.type + ";base64," + payload.base64);
+        form.append("upload_preset", UPLOAD_PRESET);
+        form.append("tags", GALLERY_TAG);
+        return fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload", {
+          method: "POST",
+          body: form
+        })
+        .then(res => res.json())
+        .then(res => { if (res.secure_url) item.url = res.secure_url; })
+        .catch(function () { /* album copy is best-effort */ });
+      })();
+
+      return Promise.all([toDrive, toAlbum]).then(function (results) {
+        onProgress(1);
+        return results[0];          // the Drive response
       });
     });
   }
@@ -756,7 +781,7 @@ var Uploader = {
      ============================================================ */
   var shelved = 0;
 
-  function shelve(item) {
+  function makePolaroid(src, name) {
     shelved++;
     var n = shelved;
     var fig = document.createElement("figure");
@@ -766,16 +791,35 @@ var Uploader = {
     fig.innerHTML =
       '<img alt="Photo shared by a guest">' +
       '<figcaption><span class="hand"></span><small></small></figcaption>';
-    fig.querySelector("img").src = item.thumb;
+    fig.querySelector("img").src = src;
     fig.querySelector(".hand").textContent = "frame " + (n < 10 ? "0" + n : n);
-    fig.querySelector("small").textContent = item.file.name;
+    fig.querySelector("small").textContent = name;
 
-    fig.addEventListener("click", function () { open(item.thumb, "frame " + n + " · " + item.file.name); });
+    fig.addEventListener("click", function () { open(src, "frame " + n + " · " + name); });
     fig.addEventListener("animationend", function () { fig.classList.remove("pop"); });
     tilt(fig);
 
     board.appendChild(fig);
     gallery.classList.add("on");
+  }
+
+  /* the guest's own frame, straight from the local preview — instant */
+  function shelve(item) {
+    makePolaroid(item.thumb, item.file.name);
+  }
+
+  /* every photo everyone has ever sent — anyone opening the link sees these.
+     Read straight from the Google Drive script (doGet): always consistent,
+     no CDN cache, no delay. Returns { ok:true, photos:[{url,name,time}] }. */
+  function loadGallery() {
+    fetch(ENDPOINT, { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        ((data && data.photos) || []).forEach(function (p) {
+          makePolaroid(p.url, p.name);
+        });
+      })
+      .catch(function () { /* album fills once the script is reachable */ });
   }
 
   function tilt(el) {
@@ -893,6 +937,7 @@ var Uploader = {
   });
 
   refresh();
+  loadGallery();     /* show everyone's frames as soon as the link opens */
 })();
 </script>
 </body>
