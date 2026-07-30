@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Share Your Moments — Mondaine &amp; Youssef</title>
+<meta name="description" content="Upload your photos from Mondaine &amp; Youssef's proposal. 31 July 2026, Royal Gate Roof." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   1. TOKENS  — identical to the invitation
+   ============================================================ */
+:root{
+  --burgundy:#7A1E2C;
+  --burgundy-deep:#4C1119;
+  --paper:#F5F1E9;
+  --paper-warm:#EDE6D8;
+  --card:#FCFAF5;
+  --brown:#8B5E3C;
+  --olive:#A3A380;
+  --orange:#D17A3F;
+  --ink:#2A1B18;
+  --ink-soft:rgba(42,27,24,.62);
+  --line:rgba(42,27,24,.16);
+
+  --display:"Playfair Display",Georgia,serif;
+  --hand:"Caveat","Segoe Script",cursive;
+  --body:"Jost","Helvetica Neue",Arial,sans-serif;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow-lift:0 30px 60px -28px rgba(42,27,24,.55), 0 6px 16px -8px rgba(42,27,24,.25);
+}
+
+/* ============================================================
+   2. BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-weight:300;
+  font-size:clamp(15px,1.05vw,17px);
+  line-height:1.75;
+  overflow-x:hidden;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.06}
+p{margin:0}
+button{font:inherit;color:inherit}
+::selection{background:var(--burgundy);color:var(--paper)}
+
+.grain{
+  position:fixed;inset:0;z-index:60;pointer-events:none;
+  opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.34'/></svg>");
+}
+.veil{position:fixed;inset:0;z-index:70;background:var(--paper);pointer-events:none;animation:veil 1.1s var(--ease) forwards}
+@keyframes veil{to{opacity:0;visibility:hidden}}
+
+.eyebrow{font-family:var(--body);font-weight:400;font-size:.7rem;letter-spacing:.42em;text-transform:uppercase}
+.hand{font-family:var(--hand);font-size:clamp(1.3rem,2.6vw,1.75rem);color:var(--burgundy);line-height:1}
+.wrap{width:min(1040px,90vw);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.rise{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
+.rise.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ============================================================
+   3. MASTHEAD
+   ============================================================ */
+.masthead{
+  position:relative;text-align:center;
+  padding:clamp(64px,13vh,132px) 6vw clamp(40px,7vh,72px);
+  background:linear-gradient(180deg,var(--paper-warm),var(--paper));
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.masthead .eyebrow{color:var(--burgundy);display:block}
+.masthead__rule{width:1px;height:clamp(34px,7vh,60px);background:linear-gradient(rgba(122,30,44,.55),transparent);margin:22px auto}
+.masthead h1{font-size:clamp(2.6rem,9vw,5.6rem);letter-spacing:.01em}
+.masthead h1 em{font-style:italic;color:var(--burgundy)}
+.masthead__sub{margin-top:18px;color:var(--ink-soft);max-width:34ch;margin-inline:auto}
+.masthead__note{margin-top:clamp(20px,4vh,34px);display:inline-flex;align-items:flex-end;gap:10px;color:var(--brown)}
+.masthead__note .hand{color:inherit;transform:rotate(-3deg)}
+.masthead__note svg{width:52px;height:32px;overflow:visible}
+.masthead__note path{stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;
+  stroke-dasharray:130;stroke-dashoffset:130;animation:draw 1.4s var(--ease) 1s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.masthead__load>*{opacity:0;transform:translateY(22px);animation:up 1.1s var(--ease) forwards}
+.masthead__load>*:nth-child(1){animation-delay:.3s}
+.masthead__load>*:nth-child(2){animation-delay:.4s}
+.masthead__load>*:nth-child(3){animation-delay:.5s}
+.masthead__load>*:nth-child(4){animation-delay:.65s}
+.masthead__load>*:nth-child(5){animation-delay:.85s}
+@keyframes up{to{opacity:1;transform:none}}
+
+/* ============================================================
+   4. DROP ZONE
+   ============================================================ */
+.stage{padding:clamp(48px,9vh,96px) 0 clamp(56px,10vh,110px)}
+
+.drop{
+  position:relative;width:min(100%,620px);margin:0 auto;
+  background:var(--card);
+  padding:clamp(34px,6vw,58px) clamp(22px,5vw,44px);
+  text-align:center;cursor:pointer;
+  box-shadow:0 24px 50px -34px rgba(42,27,24,.5);
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+}
+.drop::before{
+  content:"";position:absolute;inset:11px;pointer-events:none;
+  border:1px dashed rgba(122,30,44,.45);
+  transition:border-color .5s var(--ease),inset .5s var(--ease);
+}
+.drop:hover{transform:translateY(-4px);box-shadow:0 34px 64px -34px rgba(122,30,44,.5)}
+.drop:hover::before{border-color:var(--burgundy)}
+.drop.is-over{transform:translateY(-6px) scale(1.012);box-shadow:0 40px 70px -30px rgba(122,30,44,.55)}
+.drop.is-over::before{border-color:var(--orange);border-style:solid}
+.drop__lens{width:clamp(52px,8vw,66px);height:auto;margin:0 auto 22px;color:var(--burgundy);animation:hover 5s ease-in-out infinite}
+@keyframes hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.drop__lens circle,.drop__lens path,.drop__lens rect{stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round}
+.drop h2{font-size:clamp(1.5rem,3.6vw,2.2rem)}
+.drop h2 em{font-style:italic;color:var(--burgundy)}
+.drop__hint{margin-top:12px;color:var(--ink-soft);font-size:.95rem}
+.drop__count{display:block;margin-top:20px;font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--brown)}
+.drop input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+.notice{
+  width:min(100%,620px);margin:20px auto 0;min-height:1.2em;
+  text-align:center;font-size:.9rem;color:var(--burgundy);
+  opacity:0;transform:translateY(-6px);transition:opacity .4s var(--ease),transform .4s var(--ease);
+}
+.notice.on{opacity:1;transform:none}
+
+/* ============================================================
+   5. QUEUE — film frames that develop as they upload
+   ============================================================ */
+.queue{width:min(100%,760px);margin:clamp(44px,8vh,80px) auto 0;display:none}
+.queue.on{display:block}
+
+.queue__bar{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+  padding-bottom:16px;border-bottom:1px solid var(--line);flex-wrap:wrap;
+}
+.queue__bar h3{font-size:clamp(1.3rem,3vw,1.8rem)}
+.queue__bar .eyebrow{color:var(--brown);display:block;margin-bottom:6px}
+.queue__meter{flex:1 1 220px;min-width:180px}
+.queue__meter .track{height:3px;background:rgba(42,27,24,.14);position:relative;overflow:hidden}
+.queue__meter .fill{
+  position:absolute;inset:0 auto 0 0;width:calc(var(--p,0) * 100%);
+  background:linear-gradient(90deg,var(--burgundy),var(--orange));
+  transition:width .45s var(--ease);
+}
+.queue__meter .read{display:flex;justify-content:space-between;margin-top:8px;
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft)}
+
+.strip{list-style:none;margin:0;padding:0}
+.frame{
+  --p:0;
+  display:grid;grid-template-columns:76px 1fr auto;align-items:center;gap:clamp(14px,2.5vw,24px);
+  padding:20px 0;border-bottom:1px solid var(--line);
+  opacity:0;transform:translateX(-18px);
+  animation:slide .7s var(--ease) forwards;
+}
+@keyframes slide{to{opacity:1;transform:none}}
+.frame__thumb{position:relative;width:76px;height:76px;background:#241214;overflow:hidden;flex:none}
+.frame__thumb img{
+  width:100%;height:100%;object-fit:cover;
+  filter:grayscale(calc(1 - var(--p))) brightness(calc(.62 + .38 * var(--p))) contrast(1.04);
+  transition:filter .5s linear;
+}
+.frame__thumb::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(245,241,233,.22);
+}
+.frame__body{min-width:0}
+.frame__name{
+  display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.frame__track{height:2px;background:rgba(42,27,24,.14);margin:12px 0 9px;position:relative;overflow:hidden}
+.frame__fill{position:absolute;inset:0 auto 0 0;width:calc(var(--p) * 100%);background:var(--burgundy);transition:width .3s linear}
+.frame__meta{display:flex;gap:14px;align-items:baseline;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft)}
+.frame__status{color:var(--brown)}
+.frame.is-done .frame__status{color:var(--olive)}
+.frame.is-done .frame__fill{background:var(--olive)}
+.frame.is-failed .frame__status{color:var(--burgundy)}
+.frame.is-failed .frame__fill{background:rgba(122,30,44,.35)}
+.frame__act{
+  border:1px solid var(--line);background:transparent;border-radius:999px;
+  padding:9px 18px;cursor:pointer;
+  font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);
+  transition:color .4s var(--ease),border-color .4s var(--ease),background .4s var(--ease);
+}
+.frame__act:hover{color:var(--paper);background:var(--burgundy);border-color:var(--burgundy)}
+.frame__act[hidden]{display:none}
+
+.send{
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  margin-top:28px;flex-wrap:wrap;
+}
+.send__note{color:var(--ink-soft);font-size:.88rem}
+.cta{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  padding:18px 40px;border:1px solid var(--burgundy);border-radius:999px;
+  background:var(--burgundy);color:var(--paper);cursor:pointer;
+  font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),opacity .4s var(--ease);
+}
+.cta:hover{transform:scale(1.04);box-shadow:0 22px 44px -20px rgba(122,30,44,.7)}
+.cta:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
+
+/* ============================================================
+   6. SEAL — the moment it all lands
+   ============================================================ */
+.seal{
+  width:min(100%,760px);margin:clamp(40px,7vh,72px) auto 0;text-align:center;
+  display:none;
+}
+.seal.on{display:block}
+.seal svg{width:clamp(92px,14vw,124px);height:auto;margin-inline:auto;
+  opacity:0;transform:scale(1.8) rotate(-18deg);filter:drop-shadow(0 18px 30px rgba(76,17,25,.45))}
+.seal.on svg{animation:stamp .75s var(--ease) forwards}
+@keyframes stamp{60%{opacity:1;transform:scale(.94) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(-5deg)}}
+.seal p{margin-top:16px}
+
+/* ============================================================
+   7. GALLERY
+   ============================================================ */
+.gallery{
+  display:none;
+  padding:clamp(70px,12vh,130px) 0 clamp(80px,13vh,140px);
+  background:linear-gradient(180deg,var(--paper),var(--paper-warm));
+  border-top:1px solid var(--line);
+}
+.gallery.on{display:block}
+.gallery__head{max-width:520px;margin-bottom:clamp(38px,7vh,64px)}
+.gallery__head .eyebrow{color:var(--burgundy)}
+.gallery__head h2{font-size:clamp(1.9rem,5vw,3.2rem);margin:.4em 0 .5em}
+.gallery__head h2 em{font-style:italic;color:var(--burgundy)}
+.gallery__head p{color:var(--ink-soft);max-width:42ch}
+
+.board{columns:3;column-gap:clamp(18px,3vw,34px)}
+.polaroid{
+  break-inside:avoid;margin:0 0 clamp(20px,3.4vw,36px);
+  background:var(--card);padding:12px 12px 52px;cursor:zoom-in;
+  box-shadow:var(--shadow-lift);
+  transform:rotate(var(--tilt,-2deg));
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+  will-change:transform;
+}
+.polaroid img{width:100%;filter:contrast(1.03);transition:transform .9s var(--ease)}
+.polaroid figcaption{margin-top:14px;text-align:center}
+.polaroid figcaption .hand{display:block;transform:rotate(-1.5deg);font-size:1.35rem}
+.polaroid figcaption small{display:block;margin-top:4px;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.polaroid:hover{box-shadow:0 44px 80px -30px rgba(122,30,44,.5);z-index:3}
+.polaroid:hover img{transform:scale(1.035)}
+.polaroid.pop{animation:pop .9s var(--ease) forwards}
+@keyframes pop{from{opacity:0;transform:translateY(26px) rotate(0deg)}to{opacity:1;transform:rotate(var(--tilt,-2deg))}}
+
+/* ============================================================
+   8. LIGHTBOX
+   ============================================================ */
+.light{
+  position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:6vw;
+  background:rgba(20,10,9,.9);
+}
+.light.on{display:grid;animation:fade .4s var(--ease)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.light img{max-width:100%;max-height:78vh;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.light figcaption{margin-top:18px;text-align:center;color:rgba(245,241,233,.72);
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase}
+.light__close{
+  position:absolute;top:4vh;right:5vw;background:transparent;border:1px solid rgba(245,241,233,.4);
+  color:var(--paper);border-radius:999px;padding:12px 22px;cursor:pointer;
+  font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;
+  transition:background .4s var(--ease),border-color .4s var(--ease)}
+.light__close:hover{background:var(--burgundy);border-color:var(--burgundy)}
+
+/* ============================================================
+   9. FOOTER
+   ============================================================ */
+.foot{
+  padding:clamp(40px,7vh,72px) 6vw;text-align:center;
+  background:var(--burgundy-deep);color:rgba(245,241,233,.6);
+}
+.foot p{font-size:.62rem;letter-spacing:.36em;text-transform:uppercase}
+.sound{
+  margin-top:18px;background:transparent;border:1px solid rgba(245,241,233,.28);
+  color:rgba(245,241,233,.75);border-radius:999px;padding:10px 20px;cursor:pointer;
+  font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;
+  transition:border-color .4s var(--ease),color .4s var(--ease)}
+.sound:hover{border-color:var(--orange);color:var(--paper)}
+
+/* ============================================================
+   10. RESPONSIVE
+   ============================================================ */
+@media (max-width:900px){ .board{columns:2} }
+@media (max-width:600px){
+  body{line-height:1.7}
+  .wrap{width:min(100%,92vw)}
+  .masthead .eyebrow{letter-spacing:.3em;font-size:.6rem}
+  .masthead__note svg{width:40px}
+  .drop{padding:32px 20px}
+  .frame{grid-template-columns:60px 1fr;grid-template-areas:"thumb body" "act act";row-gap:14px}
+  .frame__thumb{grid-area:thumb;width:60px;height:60px}
+  .frame__body{grid-area:body}
+  .frame__act{grid-area:act;justify-self:start}
+  .send{flex-direction:column;align-items:stretch;text-align:center}
+  .cta{justify-content:center;padding:17px 28px;letter-spacing:.22em}
+  .gallery__head{text-align:center;margin-inline:auto}
+  .gallery__head p{margin-inline:auto}
+  .board{columns:1}
+  .light__close{top:2vh;right:5vw}
+}
+@media (max-width:400px){
+  .drop h2{font-size:1.35rem}
+  .queue__meter .read{font-size:.55rem;letter-spacing:.2em}
+}
+
+/* ============================================================
+   11. A11Y
+   ============================================================ */
+:focus-visible{outline:2px solid var(--orange);outline-offset:5px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .rise{opacity:1;transform:none}
+  .masthead__load>*{opacity:1;transform:none}
+  .seal svg{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ========== MASTHEAD ========== -->
+<header class="masthead">
+  <div class="masthead__load">
+    <span class="eyebrow">Mondaine &amp; Youssef · 31 · 07 · 2026</span>
+    <div class="masthead__rule" aria-hidden="true"></div>
+    <h1>Share Your <em>Moments</em></h1>
+    <p class="masthead__sub">Upload your photos from our special day — every angle we couldn't see ourselves.</p>
+    <p class="masthead__note">
+      <span class="hand">they develop as they send</span>
+      <svg viewBox="0 0 52 34" aria-hidden="true"><path d="M2 3c14 2 24 9 27 20"/><path d="M23 24l6 -1"/><path d="M29 23l1 -6"/></svg>
+    </p>
+  </div>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="wrap">
+
+      <!-- ---------- DROP ZONE ---------- -->
+      <div class="drop rise" id="drop" role="button" tabindex="0"
+           aria-label="Choose photos to upload, or drag them here">
+        <svg class="drop__lens" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="3" y="14" width="58" height="42" rx="3"/>
+          <path d="M20 14l4 -7h16l4 7"/>
+          <circle cx="32" cy="35" r="13"/>
+          <circle cx="32" cy="35" r="5.5"/>
+          <path d="M52 22h4"/>
+        </svg>
+        <h2>Drag your photos <em>here</em></h2>
+        <p class="drop__hint">or tap to choose from your camera roll — JPG, PNG, HEIC or WEBP</p>
+        <span class="drop__count" id="count">0 of 15 chosen</span>
+        <input type="file" id="picker" accept="image/*" multiple />
+      </div>
+
+      <p class="notice" id="notice" role="status" aria-live="polite"></p>
+
+      <!-- ---------- QUEUE ---------- -->
+      <section class="queue" id="queue" aria-labelledby="queueTitle">
+        <div class="queue__bar">
+          <div>
+            <span class="eyebrow">Your roll</span>
+            <h3 id="queueTitle">Ready to send</h3>
+          </div>
+          <div class="queue__meter">
+            <div class="track"><div class="fill" id="allFill"></div></div>
+            <div class="read"><span id="allLabel">Waiting</span><span id="allPct">0%</span></div>
+          </div>
+        </div>
+
+        <ul class="strip" id="strip"></ul>
+
+        <div class="send">
+          <p class="send__note" id="sendNote">Remove anything you'd rather keep to yourself before sending.</p>
+          <button class="cta" id="send" type="button">Send to the album</button>
+        </div>
+      </section>
+
+      <!-- ---------- SEAL ---------- -->
+      <div class="seal" id="seal">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <path fill="#7A1E2C" d="M55 21l9 7 11-3 5 10 11 4-1 11 8 8-6 10 3 11-11 4-4 11-11-2-9 7-9-7-11 2-4-11-11-4 3-11-6-10 8-8-1-11 11-4 5-10 11 3z"/>
+          <circle cx="60" cy="60" r="34" fill="none" stroke="#4C1119" stroke-width="1.6" opacity=".7"/>
+          <text x="60" y="70" text-anchor="middle" font-family="Playfair Display, Georgia, serif"
+                font-size="30" fill="#F0D9C4">M&amp;Y</text>
+        </svg>
+        <p class="hand" id="sealMsg">Sealed and sent. Thank you.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section class="gallery" id="gallery" aria-labelledby="galleryTitle">
+    <div class="wrap">
+      <div class="gallery__head rise">
+        <span class="eyebrow">The night, as you saw it</span>
+        <h2 id="galleryTitle">Your <em>frames</em>, in the album.</h2>
+        <p>Everything above landed safely. Tap any photo to see it full size.</p>
+      </div>
+      <div class="board" id="board"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Mondaine &amp; Youssef · Royal Gate Roof · 31.07.2026</p>
+  <button class="sound" id="sound" type="button" aria-pressed="true">Sound: on</button>
+</footer>
+
+<!-- ========== LIGHTBOX ========== -->
+<div class="light" id="light" role="dialog" aria-modal="true" aria-label="Photo, full size">
+  <button class="light__close" id="lightClose" type="button">Close</button>
+  <figure style="margin:0">
+    <img id="lightImg" alt="" />
+    <figcaption id="lightCap"></figcaption>
+  </figure>
+</div>
+
+<script>
+/* ============================================================
+   A. CONFIG
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var MAX_FILES   = 15;
+  var MAX_BYTES   = 25 * 1024 * 1024;   /* 25 MB per photo */
+  var CONCURRENCY = 3;                  /* simultaneous uploads */
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ============================================================
+     B. UPLOAD ADAPTER
+     ------------------------------------------------------------
+     Everything storage-related lives behind this one object, so the
+     UI never needs to change. Swap `send` for the real thing when
+     the backend is ready — the two options below are drop-in.
+     ============================================================ */
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbwddtFL6MIWi6Czx4Rmh_6GSNwSCQxOSkatqSot2h6gfu1Z3yO_kPvw4rihCT07czP5/exec";  // your /exec URL
+var SECRET   = "mondaine-youssef-2026-x7k9";
+
+var Uploader = {
+  send: function (item, onProgress) {
+    return shrink(item.file).then(function (payload) {
+      return fetch(ENDPOINT, {
+        method: "POST",
+        body: JSON.stringify({
+          secret: SECRET,
+          name: item.file.name,
+          mimeType: payload.type,
+          data: payload.base64
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          onProgress(1);
+          return res;
+        } else {
+          throw new Error(res.error || "rejected");
+        }
+      });
+    });
+  }
+};
+
+  /* Downscale before sending. Base64 inflates a file by 33%, and phone
+     photos are 4–12 MB each — this brings them to roughly 400–900 KB,
+     which is plenty for viewing and printing 6x4. */
+  function shrink(file, maxEdge) {
+    maxEdge = maxEdge || 2400;
+    return new Promise(function (resolve) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
+        var c = document.createElement("canvas");
+        c.width  = Math.round(img.width  * scale);
+        c.height = Math.round(img.height * scale);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        var dataUrl = c.toDataURL("image/jpeg", 0.86);
+        resolve({ type: "image/jpeg", base64: dataUrl.split(",")[1] });
+      };
+      img.onerror = function () {                     /* HEIC or odd format: send as-is */
+        URL.revokeObjectURL(url);
+        var r = new FileReader();
+        r.onload = function () { resolve({ type: file.type, base64: String(r.result).split(",")[1] }); };
+        r.readAsDataURL(file);
+      };
+      img.src = url;
+    });
+  }
+
+  /* ============================================================
+     C. STATE + DOM
+     ============================================================ */
+  var items = [];          /* every photo the guest has chosen */
+  var nextId = 1;
+  var busy = false;
+  var soundOn = true;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var drop = $("drop"), picker = $("picker"), count = $("count"), notice = $("notice");
+  var queue = $("queue"), strip = $("strip"), sendBtn = $("send"), sendNote = $("sendNote");
+  var allFill = $("allFill"), allPct = $("allPct"), allLabel = $("allLabel");
+  var seal = $("seal"), sealMsg = $("sealMsg");
+  var gallery = $("gallery"), board = $("board");
+  var light = $("light"), lightImg = $("lightImg"), lightCap = $("lightCap"), lightClose = $("lightClose");
+
+  /* ============================================================
+     D. PICKING FILES
+     ============================================================ */
+  drop.addEventListener("click", function (e) {
+    if (e.target === picker) return;         /* the input's own click bubbles up */
+    picker.click();
+  });
+  drop.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); picker.click(); }
+  });
+  picker.addEventListener("click", function (e) { e.stopPropagation(); });
+  picker.addEventListener("change", function () {
+    accept(picker.files);
+    picker.value = "";                       /* so the same file can be re-picked */
+  });
+
+  ["dragenter", "dragover"].forEach(function (t) {
+    drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add("is-over"); });
+  });
+  ["dragleave", "drop"].forEach(function (t) {
+    drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove("is-over"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files) accept(e.dataTransfer.files);
+  });
+  window.addEventListener("dragover", function (e) { e.preventDefault(); });
+  window.addEventListener("drop", function (e) { e.preventDefault(); });
+
+  function accept(fileList) {
+    var files = Array.prototype.slice.call(fileList);
+    var room = MAX_FILES - items.length;
+    var skipped = [];
+    var taken = 0;
+
+    files.forEach(function (file) {
+      if (!/^image\//.test(file.type)) { skipped.push(file.name + " isn't an image"); return; }
+      if (file.size > MAX_BYTES)       { skipped.push(file.name + " is over 25 MB"); return; }
+      if (taken >= room)               { return; }
+      taken++;
+      add(file);
+    });
+
+    var over = files.length - skipped.length - taken;
+    if (over > 0) skipped.push("15 photos is the limit — " + over + " left out");
+    say(skipped.join(" · "));
+    refresh();
+  }
+
+  function add(file) {
+    var item = {
+      id: nextId++,
+      file: file,
+      status: "ready",       /* ready · uploading · done · failed */
+      p: 0,
+      thumb: ""
+    };
+    items.push(item);
+    build(item);
+
+    var reader = new FileReader();           /* FileReader gives the instant preview */
+    reader.onload = function () {
+      item.thumb = reader.result;
+      item.img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ============================================================
+     E. QUEUE ROWS
+     ============================================================ */
+  function build(item) {
+    var li = document.createElement("li");
+    li.className = "frame";
+    li.style.animationDelay = Math.min(items.length * 70, 560) + "ms";
+    li.innerHTML =
+      '<div class="frame__thumb"><img alt=""></div>' +
+      '<div class="frame__body">' +
+        '<span class="frame__name"></span>' +
+        '<div class="frame__track"><div class="frame__fill"></div></div>' +
+        '<div class="frame__meta"><span class="frame__status">Ready</span><span class="frame__size"></span></div>' +
+      '</div>' +
+      '<button class="frame__act" type="button"></button>';
+
+    item.el     = li;
+    item.img    = li.querySelector("img");
+    item.status_= li.querySelector(".frame__status");
+    item.act    = li.querySelector(".frame__act");
+    li.querySelector(".frame__name").textContent = item.file.name;
+    li.querySelector(".frame__size").textContent = size(item.file.size);
+
+    item.act.addEventListener("click", function () {
+      if (item.status === "failed") { retry(item); }
+      else if (item.status === "ready") { remove(item); }
+    });
+
+    strip.appendChild(li);
+    paint(item);
+  }
+
+  function paint(item) {
+    var labels = { ready: "Ready", uploading: "Uploading…", done: "Completed", failed: "Failed" };
+    item.el.style.setProperty("--p", item.p);
+    item.el.classList.toggle("is-done", item.status === "done");
+    item.el.classList.toggle("is-failed", item.status === "failed");
+    item.status_.textContent = item.status === "uploading"
+      ? "Uploading… " + Math.round(item.p * 100) + "%"
+      : labels[item.status];
+
+    if (item.status === "ready")       { item.act.hidden = false; item.act.textContent = "Remove"; }
+    else if (item.status === "failed") { item.act.hidden = false; item.act.textContent = "Try again"; }
+    else                              { item.act.hidden = true; }
+  }
+
+  function remove(item) {
+    item.dropped = true;
+    items = items.filter(function (i) { return i !== item; });
+    item.el.style.animation = "none";        /* so the inline exit can take over */
+    item.el.style.transition = "opacity .35s, transform .35s";
+    item.el.style.opacity = "0";
+    item.el.style.transform = "translateX(-14px)";
+    setTimeout(function () { item.el.remove(); }, reduced ? 0 : 350);
+    say("");
+    refresh();
+  }
+
+  /* ============================================================
+     F. SENDING
+     ============================================================ */
+  sendBtn.addEventListener("click", start);
+
+  function start() {
+    var pending = items.filter(function (i) { return i.status === "ready"; });
+    if (!pending.length || busy) return;
+    busy = true;
+    refresh();
+
+    var next = 0, live = 0, finished = 0;
+
+    (function pump() {
+      while (live < CONCURRENCY && next < pending.length) {
+        run(pending[next++]);
+      }
+      function run(item) {
+        live++;
+
+        function finish() {
+          live--; finished++;
+          if (finished === pending.length) { busy = false; refresh(); land(); }
+          else pump();
+        }
+
+        if (item.dropped) { finish(); return; }   /* removed while others uploaded */
+
+        item.status = "uploading";
+        paint(item);
+
+        Uploader.send(item, function (p) {
+          item.p = Math.max(item.p, Math.min(p, 1));
+          paint(item);
+          overall();
+        }).then(function () {
+          item.status = "done"; item.p = 1;
+          paint(item); overall(); shelve(item);
+        }).catch(function () {
+          item.status = "failed";
+          paint(item); overall();
+        }).then(finish);
+      }
+    })();
+  }
+
+  function retry(item) {
+    item.p = 0; item.status = "ready";
+    paint(item); overall();
+    start();
+  }
+
+  /* ============================================================
+     G. PROGRESS + STATE READOUTS
+     ============================================================ */
+  function overall() {
+    var live = items.filter(function (i) { return i.status !== "ready"; });
+    if (!live.length) {
+      allFill.style.setProperty("--p", 0);
+      allPct.textContent = "0%";
+      allLabel.textContent = "Waiting";
+      return;
+    }
+    var sum = live.reduce(function (t, i) { return t + i.p; }, 0);
+    var p = sum / live.length;
+    var done = items.filter(function (i) { return i.status === "done"; }).length;
+    allFill.style.setProperty("--p", p);
+    allPct.textContent = Math.round(p * 100) + "%";
+    allLabel.textContent = done + " of " + live.length + " sent";
+  }
+
+  function refresh() {
+    count.textContent = items.length + " of " + MAX_FILES + " chosen";
+    queue.classList.toggle("on", items.length > 0);
+
+    var ready  = items.filter(function (i) { return i.status === "ready"; }).length;
+    var failed = items.filter(function (i) { return i.status === "failed"; }).length;
+
+    sendBtn.disabled = busy || ready === 0;
+    sendBtn.textContent = busy
+      ? "Sending…"
+      : ready === 0 ? "All sent"
+      : "Send " + ready + (ready === 1 ? " photo" : " photos");
+
+    sendNote.textContent = busy
+      ? "Keep this page open until the last frame lands."
+      : failed
+        ? failed + (failed === 1 ? " photo didn't make it — try it again." : " photos didn't make it — try them again.")
+        : ready
+          ? "Remove anything you'd rather keep to yourself before sending."
+          : "Everything on your roll is in the album.";
+
+    overall();
+  }
+
+  /* ============================================================
+     H. GALLERY
+     ============================================================ */
+  var shelved = 0;
+
+  function shelve(item) {
+    shelved++;
+    var n = shelved;
+    var fig = document.createElement("figure");
+    fig.className = "polaroid pop";
+    fig.style.setProperty("--tilt", (n % 2 ? -2.4 : 2.1) + (n % 3 ? 0 : 0.9) + "deg");
+    fig.style.animationDelay = Math.min(n * 90, 700) + "ms";
+    fig.innerHTML =
+      '<img alt="Photo shared by a guest">' +
+      '<figcaption><span class="hand"></span><small></small></figcaption>';
+    fig.querySelector("img").src = item.thumb;
+    fig.querySelector(".hand").textContent = "frame " + (n < 10 ? "0" + n : n);
+    fig.querySelector("small").textContent = item.file.name;
+
+    fig.addEventListener("click", function () { open(item.thumb, "frame " + n + " · " + item.file.name); });
+    fig.addEventListener("animationend", function () { fig.classList.remove("pop"); });
+    tilt(fig);
+
+    board.appendChild(fig);
+    gallery.classList.add("on");
+  }
+
+  function tilt(el) {
+    if (reduced || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var base = el.style.getPropertyValue("--tilt") || "0deg";
+    el.addEventListener("pointermove", function (e) {
+      var r = el.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = "perspective(900px) rotate(" + base + ") rotateY(" + (x * 11).toFixed(2) +
+                           "deg) rotateX(" + (-y * 11).toFixed(2) + "deg) scale(1.04) translateY(-4px)";
+    });
+    el.addEventListener("pointerleave", function () {
+      el.style.transform = "rotate(" + base + ")";
+    });
+  }
+
+  /* ============================================================
+     I. THE LANDING MOMENT
+     ============================================================ */
+  function land() {
+    var done   = items.filter(function (i) { return i.status === "done"; }).length;
+    var failed = items.filter(function (i) { return i.status === "failed"; }).length;
+    if (!done) return;
+
+    sealMsg.textContent = failed
+      ? done + " landed safely. The rest are waiting on a retry."
+      : (done === 1 ? "One frame, safely in. Thank you." : done + " frames, safely in. Thank you.");
+    seal.classList.remove("on");
+    void seal.offsetWidth;                    /* replay the stamp */
+    seal.classList.add("on");
+    if (!failed) chime();
+  }
+
+  /* ============================================================
+     J. SOUND — two soft notes, no audio files
+     ============================================================ */
+  var actx;
+  function chime() {
+    if (!soundOn) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      actx = actx || new AC();
+      [[880, 0], [1320, 0.16]].forEach(function (n) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.type = "sine"; o.frequency.value = n[0];
+        var t = actx.currentTime + n[1];
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.05, t + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+        o.connect(g); g.connect(actx.destination);
+        o.start(t); o.stop(t + 1.2);
+      });
+    } catch (e) { /* silence is fine */ }
+  }
+  $("sound").addEventListener("click", function () {
+    soundOn = !soundOn;
+    this.textContent = "Sound: " + (soundOn ? "on" : "off");
+    this.setAttribute("aria-pressed", String(soundOn));
+  });
+
+  /* ============================================================
+     K. LIGHTBOX
+     ============================================================ */
+  var lastFocus = null;
+  function open(src, cap) {
+    lastFocus = document.activeElement;
+    lightImg.src = src;
+    lightCap.textContent = cap;
+    light.classList.add("on");
+    lightClose.focus();
+  }
+  function close() {
+    light.classList.remove("on");
+    lightImg.src = "";
+    if (lastFocus) lastFocus.focus();
+  }
+  lightClose.addEventListener("click", close);
+  light.addEventListener("click", function (e) { if (e.target === light) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && light.classList.contains("on")) close();
+  });
+
+  /* ============================================================
+     L. SMALL THINGS
+     ============================================================ */
+  function say(msg) {
+    notice.textContent = msg || "";
+    notice.classList.toggle("on", !!msg);
+  }
+
+  function size(bytes) {
+    return bytes > 1048576
+      ? (bytes / 1048576).toFixed(1) + " MB"
+      : Math.max(1, Math.round(bytes / 1024)) + " KB";
+  }
+
+  /* reveal on scroll */
+  var risers = document.querySelectorAll(".rise");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
+    risers.forEach(function (el) { io.observe(el); });
+  } else {
+    risers.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* don't lose photos mid-send */
+  window.addEventListener("beforeunload", function (e) {
+    if (busy) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  refresh();
+})();
+</script>
+</body>
+</html>
